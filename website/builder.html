@@ -1,0 +1,51 @@
+<html>
+   <head>
+      <meta charset="utf-8" />
+      <link rel="stylesheet" type="text/css" href="builder.css">
+   </head>
+   <body>
+      <main>
+         <header>
+            <label>Quiz Builder</label>
+            <button>Publish</label>
+            <button>Import Existing</button>
+         </header>
+         <section class="left-cell">
+            <div id="questions-container">
+               <h2>Questions</h2>
+               <button id="new-question">New Question</button>
+               <ul id="question-list"></ul>
+            </div>
+         </section>
+         <section class="editor">
+            <span id="corner"></span>
+            <div class="question-box">
+               <h2>Question & Answers</h2>
+               <section id="question">
+                  <h1><input type="text" id="question-input" class="build-input tile" placeholder="Click to edit" /></h1>
+               </section>
+               <section id="answers">
+                  <input type="text" class="answer tile" placeholder="Click to edit" />
+                  <input type="text" class="answer tile" placeholder="Click to edit" />
+                  <input type="text" class="answer tile" placeholder="Click to edit" />
+                  <input type="text" class="answer tile" placeholder="Click to edit" />
+               </section>
+            </div>
+
+            <div class="info-box">
+               <h2>Information</h2>
+               <section class="tile" id="info-tile">
+                  <input type="text" class="title" placeholder="Click to edit title" /><br />
+                  <textarea class="text" id="text-editor" placeholder="Click to edit text"></textarea>
+                  <div id="sources">
+
+                  </div>
+               </section>
+            </div>
+            <button id="update-question">Update Question</button>
+         </section>
+      </main>
+
+      <script src="builder.js"></script>
+   </body>
+</html>
