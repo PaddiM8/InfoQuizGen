@@ -1,0 +1,14 @@
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/obj/Debug/netcoreapp2.2/InfoQuizBackend.csprojAssemblyReference.cache
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/obj/Debug/netcoreapp2.2/InfoQuizBackend.csproj.CoreCompileInputs.cache
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/obj/Debug/netcoreapp2.2/InfoQuizBackend.RazorAssemblyInfo.cache
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/obj/Debug/netcoreapp2.2/InfoQuizBackend.RazorAssemblyInfo.cs
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/obj/Debug/netcoreapp2.2/InfoQuizBackend.AssemblyInfoInputs.cache
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/obj/Debug/netcoreapp2.2/InfoQuizBackend.AssemblyInfo.cs
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/bin/Debug/netcoreapp2.2/InfoQuizBackend.deps.json
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/bin/Debug/netcoreapp2.2/InfoQuizBackend.runtimeconfig.json
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/bin/Debug/netcoreapp2.2/InfoQuizBackend.runtimeconfig.dev.json
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/bin/Debug/netcoreapp2.2/InfoQuizBackend.dll
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/bin/Debug/netcoreapp2.2/InfoQuizBackend.pdb
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/obj/Debug/netcoreapp2.2/InfoQuizBackend.RazorTargetAssemblyInfo.cache
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/obj/Debug/netcoreapp2.2/InfoQuizBackend.dll
+/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/obj/Debug/netcoreapp2.2/InfoQuizBackend.pdb
