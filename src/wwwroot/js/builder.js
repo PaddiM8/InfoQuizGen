@@ -1,5 +1,7 @@
-let questions = [];
+let questions       = [];
 let currentQuestion = -1;
+let password        = "";
+let quizId          = "";
 const server = "http://localhost:5000/api/quiz";
 
 let answers      = document.getElementById("answers").children;
@@ -67,6 +69,15 @@ function createQuestion() {
    selectQuestion(questions.length - 1);
 }
 
+function addQuestion(questionObj) {
+   questions.push(questionObj);
+   let listItem = document.createElement("li");
+   listItem.appendChild(document.createTextNode(questionObj.question));
+   document.getElementById("question-list").appendChild(listItem);
+
+   selectQuestion(questions.length - 1);
+}
+
 function deselectQuestion(index) {
 
 }
@@ -90,26 +101,63 @@ document.getElementById("update-question").addEventListener("click", function() 
    for (i = 0; i < answers.length; i++)
       questions[currentQuestion].answers[i] = answers[i].value;
    deselectQuestion(currentQuestion);
+
+   // Set cookie to save question locally
+   document.cookie = "q_" + currentQuestion + "=" +
+      encodeURIComponent(JSON.stringify(questions[currentQuestion]));
 });
+
+function clearCookies() {
+   let cookies = document.cookie.split(/; */);
+   for(i = 0; i < cookies.length; i++) {
+      let sign  = cookies[i].indexOf("=");
+      let name = cookies[i].substring(0, sign);
+      if (cookies[i].startsWith("q_"))
+         document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+   }
+}
 
 document.getElementById("publish-submit").addEventListener("click", function() {
    let data = new URLSearchParams();
+   let pass = document.getElementById("publish-password").value;
    data.append("json", JSON.stringify(questions));
-   data.append("password", document.getElementById("publish-password").value);
+   data.append("password", pass);
 
+
+   // Add loader
    let publishDialog = document.getElementById("publish-dialog");
    publishDialog.children[1]
       .innerHTML += "<span class='loading'></span>";
 
+   let action = "";
+   if (quizId == "") { // Publish as new
+      if (pass != document.getElementById("publish-password-confirm").value) {
+         alert("Passwords don't match!'");
+         return;
+      }
+
+      action = "Post";
+   } else { // Update existing
+      action = "Put";
+   }
+
    request("Post", data).then((data) => {
+      // Remove loader
       let loader = publishDialog.getElementsByClassName("loading")[0];
       loader.parentNode.removeChild(loader);
 
+      // Show Quiz URL
       publishStep2.style.display = "block";
       document.getElementById("publish-step1").style.display = "none";
       let linkElement = publishStep2.getElementsByTagName("input")[0];
       linkElement.value = location.protocol + "//" +
          window.location.host + "/q/" + JSON.parse(data);
+
+      // Update local variables
+      quizId   = JSON.parse(data);
+      password = pass;
+      document.cookie = "q_id=" + quizId;
+      document.cookie = "q_password=" + password;
    });
 });
 
@@ -124,4 +172,20 @@ publishStep2.getElementsByTagName("button")[0].addEventListener("click", functio
    toggleDialog(document.getElementById("publish-dialog"));
 });
 
-window.onload = createQuestion;
+window.onload = function() {
+   // Load values stored in cookies
+   let cookies = document.cookie.split(/; */);
+   for(i = 0; i < cookies.length; i++) {
+      console.log(cookies[i]);
+      let cookie = cookies[i];
+      if (cookie.startsWith("q_") && !cookie.endsWith("=")) {
+         let sign  = cookie.indexOf("=");
+         let name  = cookie.substring(0, sign);
+         let value = cookie.substring(sign+1);
+
+         addQuestion(JSON.parse(decodeURIComponent(value)));
+      }
+   }
+
+   if (questions.length == 0) createQuestion();
+}

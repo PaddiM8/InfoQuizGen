@@ -80,7 +80,14 @@ ViewData["Title"] = "InfoQuiz";
             function request(action, data) {
                return new Promise((resolve, reject) => {
                   const req = new XMLHttpRequest();
-                  req.open('POST', "@Url.Action("Post", "Quiz")");
+
+                  if (action == "Post")
+                     req.open('POST', "@Url.Action("Post", "Quiz")");
+                  if (action == "Put")
+                     req.open('PUT', "@Url.Action("Put", "Quiz")");
+                  if (action == "Get")
+                     req.open('GET', "@Url.Action("Get", "Quiz")");
+
                   req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                   req.onload = () => req.status === 200 ? resolve(req.response) : reject(Error(req.statusText));
                   req.onerror = (e) => reject(Error(`Network Error: ${e}`));
