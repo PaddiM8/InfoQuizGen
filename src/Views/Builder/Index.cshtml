@@ -1,0 +1,93 @@
+﻿@{
+ViewData["Title"] = "InfoQuiz";
+}
+
+<html>
+   <head>
+      <meta charset="utf-8" />
+      <link rel="stylesheet" type="text/css" href="~/css/builder.css">
+   </head>
+   <body>
+      <main>
+         <header>
+            <label>Quiz Builder</label>
+            <button id="publish-button">Publish</label>
+            <button>Import Existing</button>
+         </header>
+         <section class="left-cell">
+            <div id="questions-container">
+               <h2>Questions</h2>
+               <button id="new-question">New Question</button>
+               <ul id="question-list"></ul>
+            </div>
+         </section>
+         <section class="editor">
+            <span id="corner"></span>
+            <div class="question-box">
+               <h2>Question & Answers</h2>
+               <section id="question">
+                  <h1><input type="text" id="question-input" class="build-input tile" placeholder="Click to edit" /></h1>
+               </section>
+               <section id="answers">
+                  <input type="text" class="answer tile" placeholder="Click to edit" />
+                  <input type="text" class="answer tile" placeholder="Click to edit" />
+                  <input type="text" class="answer tile" placeholder="Click to edit" />
+                  <input type="text" class="answer tile" placeholder="Click to edit" />
+               </section>
+            </div>
+
+            <div class="info-box">
+               <h2>Information</h2>
+               <section class="tile" id="info-tile">
+                  <input type="text" class="title" placeholder="Click to edit title" /><br />
+                  <textarea class="text" id="text-editor" placeholder="Click to edit text"></textarea>
+                  <div id="sources">
+
+                  </div>
+               </section>
+            </div>
+            <button id="update-question">Update Question</button>
+         </section>
+      </main>
+
+      <!-- dialogs -->
+      <div id="dialog-background"></div>
+      <section id="publish-dialog" class="dialog">
+         <h2>Publish Quiz</h2>
+
+         <div id="publish-step1">
+            <p>Quiz Name</p>
+            <input type="text" id="quiz-name" placeholder="Name..." /><br />
+            <p>Set a Password</p>
+            <input type="password" id="publish-password" placeholder="Password..." /><br />
+            <p>Confirm Password</p>
+            <input type="password" id="publish-password-confirm" placeholder="Repeat Password..." /><br />
+            <button id="publish-submit">Publish</button>
+         </div>
+         <div id="publish-step2">
+            <h3>Quiz Published!</h3>
+            <p>Public Quiz URL:</p>
+            <input type="text" readonly="true" />
+            <span class="copy-button" id="publish-copy" title="Copy to Clipboard" role="button" aria-label="Copy Quiz URL"></span>
+            <br />
+            <button>Close</button>
+         </div>
+      </section>
+      <!--<section id="open-dialog" class="dialog">
+         <h2>Open Quiz</h2>
+         </section>-->
+         <script>
+            function request(action, data) {
+               return new Promise((resolve, reject) => {
+                  const req = new XMLHttpRequest();
+                  req.open('POST', "@Url.Action("Post", "Quiz")");
+                  req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                  req.onload = () => req.status === 200 ? resolve(req.response) : reject(Error(req.statusText));
+                  req.onerror = (e) => reject(Error(`Network Error: ${e}`));
+                  req.send(data.toString());
+               });
+            }
+         </script>
+         <script src="~/js/builder.js"></script>
+      </body>
+</html>
