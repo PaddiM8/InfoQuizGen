@@ -13100,11 +13100,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/InfoQuizBackend.csproj",
+      "projectUniqueName": "/home/paddi/Projects/Websites/InfoQuiz/backend/InfoQuizBackend.csproj",
       "projectName": "InfoQuizBackend",
-      "projectPath": "/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/InfoQuizBackend.csproj",
+      "projectPath": "/home/paddi/Projects/Websites/InfoQuiz/backend/InfoQuizBackend.csproj",
       "packagesPath": "/home/paddi/.nuget/packages/",
-      "outputPath": "/home/paddi/Projects/Websites/InfoQuiz/InfoQuizBackend/obj/",
+      "outputPath": "/home/paddi/Projects/Websites/InfoQuiz/backend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/paddi/.nuget/NuGet/NuGet.Config"

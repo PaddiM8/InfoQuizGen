@@ -1,5 +1,6 @@
 let questions = [];
 let currentQuestion = -1;
+const server = "http://localhost:5000/api/quiz";
 
 let answers      = document.getElementById("answers").children;
 let question     = document.getElementById("question-input");
@@ -13,7 +14,39 @@ questionList.addEventListener("click", function (evt) {
    selectQuestion(index);
 });
 
+document.getElementById("publish-button").addEventListener("click", function() {
+   toggleDialog(document.getElementById("publish-dialog"));
+});
+
+document.getElementById("publish-submit").addEventListener("click", function() {
+   document.getElementById("publish-dialog").children[1]
+      .innerHTML += "<span class='loading'></span>";
+
+   let result = request("POST", "", {
+      json: questions,
+      password: document.getElementById("publish-password")
+   });
+
+   if (result == "0") {
+      document.getElementById("publish-dialog")
+         .getElementByClassName("loading")[0].delete();
+   }
+});
+
 document.getElementById("new-question").addEventListener("click", createQuestion);
+
+function request(type, url, data) {
+   let xhr = new XMLHttpRequest();
+   xhr.open(type, server + "/" + url, true);
+   xhr.onreadystatechange = function () {
+      if (this.status == 200) {
+         return this.responseText;
+      }
+   };
+
+   xhr.setRequestHeader('Content-Type', 'application/json');
+   xhr.send(JSON.stringify(data));
+}
 
 function selectQuestion(index) {
    question.value = questions[index].question;
@@ -65,13 +98,20 @@ function deselectQuestion(index) {
 
 }
 
+function toggleDialog(element) {
+   let dialogBackground = document.getElementById("dialog-background");
+
+   dialogBackground.classList.toggle("shown");
+   element.classList.toggle("shown");
+}
+
 document.getElementById("update-question").addEventListener("click", function() {
    questions[currentQuestion].question = question.value;
    questions[currentQuestion].title = title.value;
    questions[currentQuestion].text = text.value;
 
    if (question.value != "")
-        questionList.children[currentQuestion].innerHTML = question.value;
+      questionList.children[currentQuestion].innerHTML = question.value;
    else questionList.children[currentQuestion].innerHTML = "New Question";
 
    for (i = 0; i < answers.length; i++)

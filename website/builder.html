@@ -7,7 +7,7 @@
       <main>
          <header>
             <label>Quiz Builder</label>
-            <button>Publish</label>
+            <button id="publish-button">Publish</label>
             <button>Import Existing</button>
          </header>
          <section class="left-cell">
@@ -47,13 +47,24 @@
       </main>
 
       <!-- dialogs -->
+      <div id="dialog-background"></div>
       <section id="publish-dialog" class="dialog">
+         <h2>Publish Quiz</h2>
 
+         <div>
+            <p>Quiz Name</p>
+            <input type="text" id="quiz-name" placeholder="Name..." /><br />
+            <p>Set a Password</p>
+            <input type="password" id="publish-password" placeholder="Password..." /><br />
+            <p>Confirm Password</p>
+            <input type="password" id="publish-password-confirm" placeholder="Repeat Password..." /><br />
+            <button id="publish-submit">Publish</button>
+         </div>
       </section>
-      <section id="open-dialog" class="dialog">
+      <!--<section id="open-dialog" class="dialog">
+         <h2>Open Quiz</h2>
+         </section>-->
 
-      </section>
-
-      <script src="builder.js"></script>
+         <script src="scripts/builder.js"></script>
    </body>
 </html>
