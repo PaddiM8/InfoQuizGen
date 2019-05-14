@@ -9,7 +9,7 @@ ViewData["Title"] = "InfoQuiz";
    </head>
    <body>
       <header>
-         <label>InfoQuiz</label>
+         <img src="~/res/infoquiz-logo.svg" class="logo" />
          <a class="ribbon" href="https://github.com/PaddiM8/InfoQuizGen"><img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
       </header>
       <main>
@@ -59,7 +59,7 @@ ViewData["Title"] = "InfoQuiz";
          function applyBackground(element, id) {
             element.children[0].srcset += id + "/1440.jpg";
             element.children[1].srcset += id + "/4224.jpg";
-            element.children[2].src += id + "/1080.jpg";
+            element.children[2].src    += id + "/1080.jpg";
          }
       </script>
    </body>

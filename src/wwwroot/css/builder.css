@@ -6,7 +6,7 @@
   font-family: OpenSans;
   src: url(../res/fonts/OpenSans.woff2) format("woff2");
 }
-p, label, input, button {
+p, label, input, button, li {
   font-family: OpenSans, serif;
 }
 
@@ -143,6 +143,16 @@ main {
 .editor h2 {
   color: #fffff0;
   margin-bottom: -10px;
+}
+
+#sources {
+  width: 100%;
+  height: 80px;
+  border: 0;
+  background-color: #F5F5F5;
+  margin-top: -40px;
+  color: black;
+  resize: none;
 }
 
 .build-input {
@@ -339,8 +349,8 @@ main {
 }
 
 .copy-button {
-  width: 37px;
-  height: 37px;
+  width: 39px;
+  height: 39px;
   margin-left: -37px;
   margin-bottom: -14px;
   border-top-right-radius: 9px;

@@ -15,7 +15,9 @@ header {
    background-color: transparent;
    height: 65px;
 
-   label {
+   .logo {
+      width: 140px;
+      height: auto;
       position: absolute;
       top: 20px;
       left: 20px;

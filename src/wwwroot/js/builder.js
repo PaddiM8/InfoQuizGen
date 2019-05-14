@@ -10,6 +10,7 @@ let answers      = document.getElementById("answers").children;
 let question     = document.getElementById("question-input");
 let title        = document.getElementById("info-tile").children[0];
 let text         = document.getElementById("text-editor");
+let sources      = document.getElementById("sources");
 let questionList = document.getElementById("question-list");
 let publishStep2 = document.getElementById("publish-step2");
 
@@ -28,7 +29,8 @@ document.getElementById("new-question").addEventListener("click", createQuestion
 function selectQuestion(index) {
    question.value = questions[index].question;
    title.value    = questions[index].title;
-   text.value = questions[index].text;
+   text.value     = questions[index].text;
+   sources.value  = questions[index].sources[0];
 
    // Set background color to green on the "correct answer" tile
    for (let i = 0; i < answers.length; i++) {
@@ -110,9 +112,10 @@ function toggleDialog(element) {
 }
 
 document.getElementById("update-question").addEventListener("click", function() {
-   questions[currentQuestion].question = question.value;
-   questions[currentQuestion].title = title.value;
-   questions[currentQuestion].text = text.value;
+   questions[currentQuestion].question   = question.value;
+   questions[currentQuestion].title      = title.value;
+   questions[currentQuestion].text       = text.value;
+   questions[currentQuestion].sources[0] = sources.value;
 
    if (question.value != "")
       questionList.children[currentQuestion].innerHTML = question.value;

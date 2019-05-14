@@ -6,7 +6,7 @@
   font-family: OpenSans;
   src: url(../res/fonts/OpenSans.woff2) format("woff2");
 }
-p, label, input, button {
+p, label, input, button, li {
   font-family: OpenSans, serif;
 }
 
@@ -73,7 +73,9 @@ header {
   background-color: transparent;
   height: 65px;
 }
-header label {
+header .logo {
+  width: 140px;
+  height: auto;
   position: absolute;
   top: 20px;
   left: 20px;
