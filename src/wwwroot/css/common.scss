@@ -1,12 +1,28 @@
 $primary-color: #EF5350;
 $white: #F5F5F5;
 
+@font-face {
+   font-family: Lato;
+   src: url(../res/fonts/Lato.woff2) format("woff2");
+}
+
+@font-face {
+   font-family: OpenSans;
+   src: url(../res/fonts/OpenSans.woff2) format("woff2");
+}
+
+p, label, input, button {
+   font-family: OpenSans, serif;
+}
+
 h1 {
    font-size: 2.3em;
+   font-family: Lato, serif;
 }
 
 h2 {
    font-size: 1.6em;
+   font-family: Lato, serif;
 }
 
 p {

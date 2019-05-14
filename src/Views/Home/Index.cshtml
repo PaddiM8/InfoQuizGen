@@ -28,7 +28,7 @@ ViewData["Title"] = "InfoQuiz";
          <section class="features">
             <article>
                <h2>Seamless Transitions</h2>
-               <p>Quizzes made with InfoQuiz have high-performant and smooth CSS transitions.</p>
+               <p>Quizzes made with InfoQuiz have performant and smooth CSS transitions.</p>
 
                <h2>Knowledge based</h2>
                <p>The point of InfoQuizzes isn't to get as many correct answers as possible.
@@ -50,8 +50,10 @@ ViewData["Title"] = "InfoQuiz";
          InfoQuiz
       </footer>
       <script>
-         //let backgroundId = Math.floor(Math.random() * 2);
-         let backgroundId = 1;
+         let backgroundId = Math.floor(Math.random() * 6);
+         let bg3 = Math.floor(Math.random() * 4);
+         if (bg3 == 0) backgroundId = 3;
+         //let backgroundId = 1;
          applyBackground(document.getElementById("background"), backgroundId);
 
          function applyBackground(element, id) {

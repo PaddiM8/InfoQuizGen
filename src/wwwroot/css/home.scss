@@ -48,12 +48,14 @@ header {
    h1 {
       margin-bottom: 50px;
       margin-top: -50px;
+      text-shadow: 2px 2px #424242;
    }
 
    .centerbox {
       width: 75%;
-      height: 180px;
+      height: 100px;
       margin: auto;
+      margin-top: -25px;
       text-align: center;
       color: white;
    }
@@ -62,8 +64,16 @@ header {
       background-color: #E53935;
    }
 
+   button:hover {
+      background-color: #C62828;
+   }
+
    button.second {
       background-color: $white;
+   }
+
+   button.second:hover {
+      background-color: #BDBDBD;
    }
 }
 
