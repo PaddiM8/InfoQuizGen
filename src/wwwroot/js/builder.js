@@ -1,3 +1,5 @@
+"use strict";
+
 let questions       = [];
 let currentQuestion = -1;
 let password        = "";
@@ -29,7 +31,7 @@ function selectQuestion(index) {
    text.value = questions[index].text;
 
    // Set background color to green on the "correct answer" tile
-   for (i = 0; i < answers.length; i++) {
+   for (let i = 0; i < answers.length; i++) {
       answers[i].value = questions[index].answers[i];
       if (questions[index].correctAnswer == i)
          answers[i].style.backgroundColor = "#26de81";
@@ -86,6 +88,24 @@ function toggleDialog(element) {
    let dialogBackground = document.getElementById("dialog-background");
 
    dialogBackground.classList.toggle("shown");
+
+   // Adjust for update
+   if (element.id == "publish-dialog") {
+      if (password != "" && !element.classList.contains("shown")) {
+         update(quizId, JSON.stringify(questions), password);
+      } else if (quizId != "") {
+         let labels = element.getElementsByTagName("p");
+         labels[2].style.display = "none";
+         labels[1].innerHTML = "Quiz Password";
+         document.getElementById("publish-password-confirm").style.display = "none";
+      } else {
+         let labels = element.getElementsByTagName("p");
+         labels[2].style.display = "block";
+         labels[1].innerHTML = "Set a Password";
+         document.getElementById("publish-password-confirm").style.display = "block";
+      }
+   }
+
    element.classList.toggle("shown");
 }
 
@@ -98,7 +118,7 @@ document.getElementById("update-question").addEventListener("click", function() 
       questionList.children[currentQuestion].innerHTML = question.value;
    else questionList.children[currentQuestion].innerHTML = "New Question";
 
-   for (i = 0; i < answers.length; i++)
+   for (let i = 0; i < answers.length; i++)
       questions[currentQuestion].answers[i] = answers[i].value;
    deselectQuestion(currentQuestion);
 
@@ -109,7 +129,7 @@ document.getElementById("update-question").addEventListener("click", function() 
 
 function clearCookies() {
    let cookies = document.cookie.split(/; */);
-   for(i = 0; i < cookies.length; i++) {
+   for(let i = 0; i < cookies.length; i++) {
       let sign  = cookies[i].indexOf("=");
       let name = cookies[i].substring(0, sign);
       if (cookies[i].startsWith("q_"))
@@ -117,9 +137,52 @@ function clearCookies() {
    }
 }
 
-document.getElementById("publish-submit").addEventListener("click", function() {
+function update(id, json, pass) {
+   if (id.startsWith("\"")) id = JSON.parse(id);
    let data = new URLSearchParams();
-   let pass = document.getElementById("publish-password").value;
+   data.append("json", json);
+   data.append("password", pass);
+   request("Update", data, id).then((result) => {
+      showQuizUrl(result);
+   });
+}
+
+function showQuizUrl(id) {
+   if (id.startsWith("\"")) id = JSON.parse(id);
+   publishStep2.style.display = "block";
+   document.getElementById("publish-step1").style.display = "none";
+   let linkElement = publishStep2.getElementsByTagName("input")[0];
+   linkElement.value = location.protocol + "//" +
+      window.location.host + "/q/" + id;
+}
+
+function request(action, data, id = "") {
+   return new Promise((resolve, reject) => {
+      const req = new XMLHttpRequest();
+      let url = "/api/database/";
+
+      if (action == "Create")
+         req.open('POST', url);
+      if (action == "Update")
+         req.open('PUT', url + id);
+      if (action == "Get")
+         req.open('GET', url + id);
+
+      req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+      req.onload = function() {
+         if (req.status === 200) {
+            resolve(req.response);
+         } else reject(Error(req.statusText));
+      }
+      req.onerror = (e) => reject(Error(`Network Error: ${e}`));
+      req.send(data.toString());
+   });
+}
+
+document.getElementById("publish-submit").addEventListener("click", function() {
+   let data  = new URLSearchParams();
+   let pass  = document.getElementById("publish-password").value;
+   let pass2 = document.getElementById("publish-password-confirm").value;
    data.append("json", JSON.stringify(questions));
    data.append("password", pass);
 
@@ -129,35 +192,31 @@ document.getElementById("publish-submit").addEventListener("click", function() {
    publishDialog.children[1]
       .innerHTML += "<span class='loading'></span>";
 
-   let action = "";
+   let action = "Update"; // Update existing
    if (quizId == "") { // Publish as new
-      if (pass != document.getElementById("publish-password-confirm").value) {
+      if (pass != pass2) {
          alert("Passwords don't match!'");
          return;
       }
 
-      action = "Post";
-   } else { // Update existing
-      action = "Put";
+      action = "Create";
    }
 
-   request("Post", data).then((data) => {
+   if (quizId.startsWith("\"")) quizId = JSON.parse(quizId);
+   request(action, data, quizId).then((result) => {
       // Remove loader
       let loader = publishDialog.getElementsByClassName("loading")[0];
       loader.parentNode.removeChild(loader);
 
-      // Show Quiz URL
-      publishStep2.style.display = "block";
-      document.getElementById("publish-step1").style.display = "none";
-      let linkElement = publishStep2.getElementsByTagName("input")[0];
-      linkElement.value = location.protocol + "//" +
-         window.location.host + "/q/" + JSON.parse(data);
+      showQuizUrl(result);
 
       // Update local variables
-      quizId   = JSON.parse(data);
+      quizId   = result;
       password = pass;
-      document.cookie = "q_id=" + quizId;
-      document.cookie = "q_password=" + password;
+      document.cookie = "q_id=" + result;
+      document.getElementById("publish-button").innerHTML = "Publish Changes";
+   }).catch(function(reject) {
+      console.log("Error: " + reject);
    });
 });
 
@@ -170,22 +229,34 @@ copyButton.addEventListener("click", function() {
 
 publishStep2.getElementsByTagName("button")[0].addEventListener("click", function() {
    toggleDialog(document.getElementById("publish-dialog"));
+   publishStep2.style.display = "none";
+   document.getElementById("publish-step1").style.display = "block";
+});
+
+document.getElementById("dialog-background").addEventListener("click", function()  {
+   let publishDialog = document.getElementById("publish-dialog");
+   if (publishDialog.classList.contains("shown"))
+      toggleDialog(publishDialog);
 });
 
 window.onload = function() {
    // Load values stored in cookies
    let cookies = document.cookie.split(/; */);
-   for(i = 0; i < cookies.length; i++) {
-      console.log(cookies[i]);
+   for(let i = 0; i < cookies.length; i++) {
       let cookie = cookies[i];
       if (cookie.startsWith("q_") && !cookie.endsWith("=")) {
          let sign  = cookie.indexOf("=");
          let name  = cookie.substring(0, sign);
          let value = cookie.substring(sign+1);
 
-         addQuestion(JSON.parse(decodeURIComponent(value)));
+         if (name.match(/q_\d+/))
+            addQuestion(JSON.parse(decodeURIComponent(value)));
+         else if (name == "q_id")
+            quizId = value;
       }
    }
 
    if (questions.length == 0) createQuestion();
+   if (quizId != "")
+      document.getElementById("publish-button").innerHTML = "Publish Changes";
 }

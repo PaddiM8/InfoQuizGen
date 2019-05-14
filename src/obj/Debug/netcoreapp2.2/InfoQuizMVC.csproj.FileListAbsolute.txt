@@ -50,3 +50,5 @@
 /home/paddi/Projects/Websites/InfoQuiz/src/obj/Debug/netcoreapp2.2/InfoQuizMVC.dll
 /home/paddi/Projects/Websites/InfoQuiz/src/obj/Debug/netcoreapp2.2/InfoQuizMVC.pdb
 /home/paddi/Projects/Websites/InfoQuiz/src/obj/Debug/netcoreapp2.2/InfoQuizMVC.csproj.CopyComplete
+/home/paddi/Projects/Websites/InfoQuiz/src/obj/Debug/netcoreapp2.2/Razor/Views/Quiz/Index.g.cshtml.cs
+/home/paddi/Projects/Websites/InfoQuiz/src/obj/Debug/netcoreapp2.2/Razor/Views/ExampleQuiz/Index.g.cshtml.cs

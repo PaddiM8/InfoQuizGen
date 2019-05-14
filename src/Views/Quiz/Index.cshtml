@@ -1,0 +1,35 @@
+<html>
+   <head>
+      <title>Climate Quiz</title>
+      <meta charset="utf-8">
+      <link rel="stylesheet" type="text/css" href="~/css/quiz.css" />
+   </head>
+   <body>
+      <wrapper>
+         <header>
+            <h1>Quiz</h1>
+         </header>
+         <main>
+            <section id="question" class="question tile"></section>
+            <article id="text" class="text tile">
+               <div id="content"></div>
+               <div id="sources" class="sources"></div>
+            </article>
+            <section id="answers">
+               <div class="answer tile"></div>
+               <div class="answer tile"></div>
+               <div class="answer tile"></div>
+               <div class="answer tile"></div>
+            </section>
+            <button class="button" id="continue">
+               <label>Continue</label>
+               <span class="arrow" id="continueArrow"><img src="~/res/quiz/arrow.svg" /></span>
+            </button>
+         </main>
+      </wrapper>
+      <script>
+         let questions = @Html.Raw(ViewData["json"]);
+      </script>
+      <script src="~/js/quiz.js"></script>
+   </body>
+</html>

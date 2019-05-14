@@ -76,25 +76,6 @@ ViewData["Title"] = "InfoQuiz";
       <!--<section id="open-dialog" class="dialog">
          <h2>Open Quiz</h2>
          </section>-->
-         <script>
-            function request(action, data) {
-               return new Promise((resolve, reject) => {
-                  const req = new XMLHttpRequest();
-
-                  if (action == "Post")
-                     req.open('POST', "@Url.Action("Post", "Quiz")");
-                  if (action == "Put")
-                     req.open('PUT', "@Url.Action("Put", "Quiz")");
-                  if (action == "Get")
-                     req.open('GET', "@Url.Action("Get", "Quiz")");
-
-                  req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                  req.onload = () => req.status === 200 ? resolve(req.response) : reject(Error(req.statusText));
-                  req.onerror = (e) => reject(Error(`Network Error: ${e}`));
-                  req.send(data.toString());
-               });
-            }
-         </script>
          <script src="~/js/builder.js"></script>
-      </body>
+   </body>
 </html>

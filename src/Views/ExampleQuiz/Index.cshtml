@@ -1,0 +1,55 @@
+<html>
+   <head>
+      <title>Climate Quiz</title>
+      <meta charset="utf-8">
+      <link rel="stylesheet" type="text/css" href="~/css/quiz.css" />
+   </head>
+   <body>
+      <wrapper>
+         <nav id="language-select">
+            <div id="swedish" class="language">
+               <img src="~/res/quiz/se-flag.png" class="flag"></span><a onclick="window.location.search += '&lang=se'">Svenska</a>
+            </div>
+            <div id="english" class="language">
+               <img src="~/res/quiz/en-flag.png" class="flag en"></span><a onclick="window.location.search = location.host + location.pathname" href="#">English</a>
+            </div>
+         </nav>
+         <header>
+            <h1>Climate Quiz</h1>
+         </header>
+         <main>
+            <section id="question" class="question tile"></section>
+            <article id="text" class="text tile">
+               <div id="content"></div>
+               <div id="sources" class="sources"></div>
+            </article>
+            <section id="answers">
+               <div class="answer tile"></div>
+               <div class="answer tile"></div>
+               <div class="answer tile"></div>
+               <div class="answer tile"></div>
+            </section>
+            <button class="button" id="continue">
+               <label>Continue</label>
+               <span class="arrow" id="continueArrow"><img src="~/res/quiz/arrow.svg" /></span>
+            </button>
+         </main>
+      </wrapper>
+
+      <script>
+         var script = document.createElement('script');
+         if (window.location.href.endsWith("&lang=se")) {
+            script.src = "js/se.js";
+            document.getElementsByTagName("header")[0].innerHTML = "<h1>Klimatquiz</h1>";
+            document.getElementById("continue").children[0].innerHTML = "Fortsätt";
+            document.getElementById("english").style.display = "block";
+            document.getElementById("swedish").style.display = "none";
+         } else {
+            script.src = "js/en.js";
+         }
+
+         document.head.appendChild(script);
+      </script>
+      <script src="~/js/quiz.js"></script>
+   </body>
+</html>

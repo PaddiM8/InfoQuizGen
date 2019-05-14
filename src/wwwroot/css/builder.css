@@ -40,6 +40,10 @@ button.second {
   color: black;
 }
 
+button.second a {
+  color: black;
+}
+
 button.second:hover {
   background-color: #D3D3D3;
 }

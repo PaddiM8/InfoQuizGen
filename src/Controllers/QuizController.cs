@@ -1,86 +1,27 @@
 ﻿using System;
-using MongoDB.Driver;
-using MongoDB.Bson;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using InfoQuizMVC.Models;
 
 namespace InfoQuizMVC.Controllers
 {
-   [Route("api/[controller]")]
-   [ApiController]
-   public class QuizController : ControllerBase
-   {
-      // GET api/quiz/5
-      [HttpGet("{id}")]
-      public async Task<string> Get(string id)
-      {
-         var quiz = await new Database().QuizCollection
-            .FindAsync<Quiz>(x => x.Id == new ObjectId(id)).Result.SingleAsync();
-         return quiz.Json;
-      }
+    public class QuizController : Controller
+    {
+       [Route("q/{id}")]
+       public IActionResult Index(string id)
+       {
+          ViewData["json"] = new DatabaseController().Get(id).Result;
+          Console.WriteLine("Json: " + ViewData["json"]);
+          return View();
+       }
 
-      // POST api/values
-      [HttpPost]
-      public async Task<ObjectId> Post([FromForm]string json, [FromForm]string password)
-      {
-         var quiz = new Quiz
-         {
-            Json     = json,
-            Password = PBKDF2.Hash(password)
-         };
-
-         await new Database().QuizCollection.InsertOneAsync(quiz);
-
-         return quiz.Id;
-      }
-
-      [HttpPut("{id}")]
-      public async Task<string> Put(string id, [FromForm]string json, [FromForm]string password)
-      {
-         var quiz = await new Database().QuizCollection
-            .FindAsync<Quiz>(x => x.Id == new ObjectId(id)).Result
-            .SingleAsync();
-
-         if (PBKDF2.Validate(password, quiz.Password))
-         {
-            await new Database().QuizCollection.UpdateOneAsync(
-                  Builders<Quiz>.Filter.Eq("_id", new ObjectId(id)),
-                  Builders<Quiz>.Update.Set("json", json));
-            return "0";
-         }
-         else
-         {
-            return "Incorrect password.";
-         }
-      }
-
-      [HttpPut("{id}/changePassword")]
-      public async Task<string> ChangePassword(string id, [FromForm]string oldPassword, [FromForm]string newPassword)
-      {
-         var quiz = await new Database().QuizCollection
-            .FindAsync<Quiz>(x => x.Id == new ObjectId(id)).Result
-            .SingleAsync();
-
-         if (PBKDF2.Validate(oldPassword, quiz.Password))
-         {
-            await new Database().QuizCollection.UpdateOneAsync(
-                  Builders<Quiz>.Filter.Eq("_id", new ObjectId(id)),
-                  Builders<Quiz>.Update.Set("password", newPassword));
-            return "0";
-         }
-         else
-         {
-            return "Incorrect password.";
-         }
-      }
-
-      // DELETE api/values/5
-      [HttpDelete("{id}")]
-      public void Delete(int id)
-      {
-
-      }
-   }
+       [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+       public IActionResult Error()
+       {
+          return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+       }
+    }
 }
