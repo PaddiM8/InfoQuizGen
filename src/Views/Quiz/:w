@@ -34,7 +34,7 @@ header {
 .front {
    display: grid;
    grid-item: front;
-   height: 60vh;
+   height: 800px;
 
    picture img {
       width: 100%;
@@ -42,7 +42,6 @@ header {
       position: absolute;
       z-index: -1;
       margin-top: -65px;
-      overflow: hidden;
    }
 
    h1 {
@@ -57,14 +56,6 @@ header {
       text-align: center;
       color: white;
    }
-
-   button {
-      background-color: #E53935;
-   }
-
-   button.second {
-      background-color: $white;
-   }
 }
 
 .features {
@@ -74,7 +65,7 @@ header {
    grid-item: features;
 
    background-color: $white;
-   min-height: 40vh;
+   height: 500px;
    padding: 20px;
    padding-top: 60px;
    padding-left: 180px;
@@ -99,19 +90,12 @@ header {
 footer {
    grid-item: footer;
    color: black;
-   font-size: 1.3em;
+   font-size: 1.2em;
+   padding: 30px;
    background-color: $white;
-   padding: 35px;
-   position: relative;
-
-   label {
-   }
 
    hr {
-      position: absolute;
-      top: 0;
-      width: calc(100% - 25px);
-      left: 12.5;
+      width: calc(100% - 10px);
       height: 0;
       border-top: 1px solid rgba(0, 0, 0, 0.1);
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);

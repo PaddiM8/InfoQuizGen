@@ -17,11 +17,14 @@ header {
    background-color: $primary-color;
    padding: 20px;
 
-   label {
+   img {
+      display: block;
       color: white;
       font-size: 1.3em;
       position: absolute;
-      top: 1.3em;
+      top: 22px;
+      width: 140px;
+      height: auto;
    }
 
    button {

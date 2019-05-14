@@ -14,6 +14,11 @@ ViewData["Title"] = "InfoQuiz";
       </header>
       <main>
          <section class="front">
+            <picture id="background">
+               <source media="(min-width: 1081px)" srcset="res/backgrounds/">
+               <source media="(mid-width: 1441px)" srcset="res/backgrounds/">
+               <img src="res/backgrounds/">
+            </picture>
             <div class="centerbox">
                <h1>Create educational quizzes with ease</h1>
                <button><a asp-controller="Builder" asp-action="Index">Create a Quiz</a></button>
@@ -41,7 +46,19 @@ ViewData["Title"] = "InfoQuiz";
          </section>
       </main>
       <footer>
+         <hr />
          InfoQuiz
       </footer>
+      <script>
+         //let backgroundId = Math.floor(Math.random() * 2);
+         let backgroundId = 1;
+         applyBackground(document.getElementById("background"), backgroundId);
+
+         function applyBackground(element, id) {
+            element.children[0].srcset += id + "/1440.jpg";
+            element.children[1].srcset += id + "/4224.jpg";
+            element.children[2].src += id + "/1080.jpg";
+         }
+      </script>
    </body>
 </html>
