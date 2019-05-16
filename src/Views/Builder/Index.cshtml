@@ -1,8 +1,4 @@
-﻿@{
-ViewData["Title"] = "InfoQuiz";
-}
-
-<html>
+﻿<html>
    <head>
       <meta charset="utf-8" />
       <link rel="stylesheet" type="text/css" href="~/css/builder.css">
@@ -10,9 +6,9 @@ ViewData["Title"] = "InfoQuiz";
    <body>
       <main>
          <header>
-            <a href="@Url.Action("Index", "Home")"><img src="~/res/infoquiz-logo.svg" /></a>
+            <a href="@Url.Action("Index", "Home")"><img src="~/res/infoquizbuilder-logo.svg" /></a>
             <button id="publish-button">Publish</label>
-            <button>Import Existing</button>
+            <button id="open-button">Open...</button>
          </header>
          <section class="left-cell">
             <div id="questions-container">
@@ -28,8 +24,7 @@ ViewData["Title"] = "InfoQuiz";
                <section id="question">
                   <h1><input type="text" id="question-input" class="build-input tile" placeholder="Click to edit" /></h1>
                </section>
-               <section id="answers">
-                  <input type="text" class="answer tile" placeholder="Click to edit" />
+               <section id="answers"> <input type="text" class="answer tile" placeholder="Click to edit" />
                   <input type="text" class="answer tile" placeholder="Click to edit" />
                   <input type="text" class="answer tile" placeholder="Click to edit" />
                   <input type="text" class="answer tile" placeholder="Click to edit" />
@@ -71,9 +66,17 @@ ViewData["Title"] = "InfoQuiz";
             <button>Close</button>
          </div>
       </section>
-      <!--<section id="open-dialog" class="dialog">
+      <section id="open-dialog" class="dialog">
          <h2>Open Quiz</h2>
-         </section>-->
-         <script src="~/js/builder.js"></script>
+
+         <div>
+            <p>Quiz URL</p>
+            <input type="text" id="open-url" placeholder="https://infoquiz.org/q/5cd9b6a89c93825a58d5ceab" /><br />
+            <p>Quiz Password</p>
+            <input type="password" id="open-password" placeholder="Password..." /><br />
+            <button id="open-submit">Open</button>
+         </div>
+      </section>
+      <script src="~/js/builder.js"></script>
    </body>
 </html>

@@ -6,7 +6,7 @@
   font-family: OpenSans;
   src: url(../res/fonts/OpenSans.woff2) format("woff2");
 }
-p, label, input, button, li {
+p, label, input, button, li, textarea {
   font-family: OpenSans, serif;
 }
 
@@ -139,6 +139,7 @@ main {
   background-color: #F5F5F5;
   border: 0;
   color: black;
+  padding-left: 20px;
 }
 .editor h2 {
   color: #fffff0;
@@ -261,10 +262,10 @@ main {
   position: absolute;
   z-index: 20;
   min-width: 600px;
-  min-height: 400px;
+  min-height: 275px;
   border-radius: 9px;
   background-color: #EF5350;
-  padding: 20px;
+  padding: 50px;
   padding-top: 0;
   color: white;
   visibility: hidden;
@@ -281,22 +282,23 @@ main {
 }
 .dialog h2 {
   text-align: center;
+  padding-bottom: 30px;
 }
 .dialog p {
   margin-bottom: 5px;
 }
 .dialog button {
   font-size: 1em;
-  float: right;
   margin-top: 15px;
   margin-right: 0;
+  float: right;
 }
 .dialog input[type=text], .dialog input[type=password] {
-  padding: 10px 12px 10px 12px;
+  padding: 12px 12px 12px 12px;
   background-color: #F5F5F5;
   border: 0;
   border-radius: 9px;
-  min-width: 400px;
+  min-width: 550px;
   color: black;
 }
 .dialog .loading {
@@ -349,10 +351,10 @@ main {
 }
 
 .copy-button {
-  width: 39px;
-  height: 39px;
-  margin-left: -37px;
-  margin-bottom: -14px;
+  width: 43px;
+  height: 43px;
+  margin-left: -40px;
+  margin-bottom: -16px;
   border-top-right-radius: 9px;
   border-bottom-right-radius: 9px;
   display: inline-block;

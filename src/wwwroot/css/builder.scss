@@ -85,6 +85,7 @@ main {
       background-color: $white;
       border: 0;
       color: black;
+      padding-left: 20px;
    }
 
    h2 {
@@ -220,10 +221,10 @@ main {
    position: absolute;
    z-index: 20;
    min-width: 600px;
-   min-height: 400px;
+   min-height: 275px;
    border-radius: 9px;
    background-color: $primary-color;
-   padding: 20px;
+   padding: 50px;
    padding-top: 0;
    color: white;
    visibility: hidden;
@@ -243,6 +244,7 @@ main {
 
    h2 {
       text-align: center;
+      padding-bottom: 30px;
    }
 
    p {
@@ -251,17 +253,17 @@ main {
 
    button {
       font-size: 1em;
-      float: right;
       margin-top: 15px;
       margin-right: 0;
+      float: right;
    }
 
    input[type="text"], input[type="password"] {
-      padding: 10px 12px 10px 12px;
+      padding: 12px 12px 12px 12px;
       background-color: $white;
       border: 0;
       border-radius: 9px;
-      min-width: 400px;
+      min-width: 550px;
       color: black;
       @extend .shadow;
    }
@@ -322,10 +324,10 @@ main {
 }
 
 .copy-button {
-   width: 39px;
-   height: 39px;
-   margin-left: -37px;
-   margin-bottom: -14px;
+   width: 43px;
+   height: 43px;
+   margin-left: -40px;
+   margin-bottom: -16px;
    border-top-right-radius: 9px;
    border-bottom-right-radius: 9px;
    display: inline-block;
