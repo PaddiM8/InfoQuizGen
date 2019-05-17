@@ -8,6 +8,9 @@ public class Quiz
    [BsonId]
    public ObjectId Id { get; set; }
 
+   [BsonElement("name")]
+   public string Name { get; set; }
+
    [BsonElement("json")]
    public string Json { get; set; }
 

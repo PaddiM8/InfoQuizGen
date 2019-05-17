@@ -13,8 +13,9 @@ namespace InfoQuizMVC.Controllers
        [Route("q/{id}")]
        public IActionResult Index(string id)
        {
-          ViewData["json"] = new DatabaseController().Get(id).Result;
-          Console.WriteLine("Json: " + ViewData["json"]);
+          Tuple<string, string> quizData = new DatabaseController().GetQuiz(id).Result;
+          ViewData["name"] = quizData.Item1;
+          ViewData["json"] = quizData.Item2;
           return View();
        }
 

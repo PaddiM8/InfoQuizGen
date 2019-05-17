@@ -82,9 +82,9 @@ header img {
   color: white;
   font-size: 1.3em;
   position: absolute;
-  top: 22px;
-  width: 140px;
-  height: auto;
+  top: 23px;
+  width: auto;
+  height: 30px;
 }
 header button {
   float: right;
@@ -272,9 +272,9 @@ main {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  -webkit-box-shadow: 1px 1px 1px 0px rgba(50, 50, 50, 0.1);
-  -moz-box-shadow: 1px 1px 1px 0px rgba(50, 50, 50, 0.1);
-  box-shadow: 1px 1px 1px 0px rgba(50, 50, 50, 0.1);
+  -webkit-box-shadow: 1px 2px 2px 0px rgba(50, 50, 50, 0.4);
+  -moz-box-shadow: 1px 2px 2px 0px rgba(50, 50, 50, 0.4);
+  box-shadow: 1px 2px 2px 0px rgba(50, 50, 50, 0.4);
 }
 .dialog div {
   margin: auto;
@@ -324,6 +324,11 @@ main {
   visibility: visible;
 }
 
+#dialog-background.shown {
+  opacity: 0.4;
+  visibility: visible;
+}
+
 .loading {
   display: inline-block;
   width: 15px;
@@ -370,11 +375,6 @@ main {
     transform: rotate(360deg);
   }
 }
-#dialog-background.shown {
-  opacity: 0.2;
-  visibility: visible;
-}
-
 /* I'm lazy ok.. */
 #corner {
   width: 40px;

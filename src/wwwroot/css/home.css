@@ -74,10 +74,10 @@ header {
   height: 65px;
 }
 header .logo {
-  width: 140px;
-  height: auto;
+  width: auto;
+  height: 30px;
   position: absolute;
-  top: 20px;
+  top: 23px;
   left: 20px;
   font-size: 21px;
   color: white;

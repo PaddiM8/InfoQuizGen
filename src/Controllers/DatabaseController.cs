@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace InfoQuizMVC.Controllers
 {
@@ -13,21 +15,33 @@ namespace InfoQuizMVC.Controllers
    [ApiController]
    public class DatabaseController : ControllerBase
    {
-      // GET api/quiz/5
-      [HttpGet("{id}")]
-      public async Task<string> Get(string id)
+
+      public async Task<Tuple<string, string>> GetQuiz(string id)
       {
          var quiz = await new Database().QuizCollection
             .FindAsync<Quiz>(x => x.Id == new ObjectId(id)).Result.SingleAsync();
-         return quiz.Json;
+         return new Tuple<string, string>(quiz.Name, quiz.Json);
+      }
+
+      // GET api/quiz/5
+      [HttpGet("{id}")]
+      public string Get(string id)
+      {
+         var quizData = GetQuiz(id).Result;
+         return JsonConvert.SerializeObject(new
+         {
+            name = quizData.Item1,
+            json = quizData.Item2
+         });
       }
 
       // POST api/values
       [HttpPost]
-      public async Task<ObjectId> Create([FromForm]string json, [FromForm]string password)
+      public async Task<ObjectId> Create([FromForm]string name, [FromForm]string json, [FromForm]string password)
       {
          var quiz = new Quiz
          {
+            Name     = name,
             Json     = json,
             Password = PBKDF2.Hash(password)
          };
@@ -39,7 +53,7 @@ namespace InfoQuizMVC.Controllers
 
       // PUT api/quiz/5
       [HttpPut("{id}")]
-      public async Task<string> Update(string id, [FromForm]string json, [FromForm]string password)
+      public async Task<string> Update(string id, [FromForm]string name, [FromForm]string json, [FromForm]string password)
       {
          var quiz = await new Database().QuizCollection
             .FindAsync<Quiz>(x => x.Id == new ObjectId(id)).Result
@@ -47,9 +61,11 @@ namespace InfoQuizMVC.Controllers
 
          if (PBKDF2.Validate(password, quiz.Password))
          {
+            var update = Builders<Quiz>.Update.Set("name", name)
+                                              .Set("json", json);
+
             await new Database().QuizCollection.UpdateOneAsync(
-                  Builders<Quiz>.Filter.Eq("_id", new ObjectId(id)),
-                  Builders<Quiz>.Update.Set("json", json));
+                  Builders<Quiz>.Filter.Eq("_id", new ObjectId(id)), update);
             return id;
          }
          else

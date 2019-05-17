@@ -2,53 +2,105 @@
 
 let questions       = [];
 let currentQuestion = -1;
-let password        = "";
 let quizId          = "";
+let quizName        = "";
+let password        = "";
 const server = "http://localhost:5000/api/quiz";
 
-let answers      = document.getElementById("answers").children;
-let question     = document.getElementById("question-input");
-let title        = document.getElementById("info-tile").children[0];
-let text         = document.getElementById("text-editor");
-let sources      = document.getElementById("sources");
-let questionList = document.getElementById("question-list");
-let publishStep2 = document.getElementById("publish-step2");
+const editor = {
+   "answers":  document.getElementById("answers").children,
+   "question": document.getElementById("question-input"),
+   "title":    document.getElementById("info-tile").children[0],
+   "text":     document.getElementById("text-editor"),
+   "sources":  document.getElementById("sources"),
+   "submit":   document.getElementById("update-question")
+};
 
+const questionsArea = {
+   "list":   document.getElementById("question-list"),
+   "button": document.getElementById("new-question")
+};
 
-questionList.addEventListener("click", function (evt) {
+const dialogBackground = document.getElementById("dialog-background");
+
+const publishDialog = {
+   "step1":            document.getElementById("publish-step1"),
+   "step2":            document.getElementById("publish-step2"),
+   "submit":           document.getElementById("publish-submit"),
+   "name":             document.getElementById("publish-name"),
+   "password":         document.getElementById("publish-password"),
+   "passwordConfirm":  document.getElementById("publish-password-confirm"),
+   "copyButton":       document.getElementById("publish-copy"),
+   "cancel":           document.getElementById("publish-dialog").getElementsByClassName("cancel")[0]
+};
+
+const openDialog = {
+   "submit":   document.getElementById("open-submit"),
+   "url":      document.getElementById("open-url"),
+   "password": document.getElementById("open-password"),
+   "cancel":   document.getElementById("open-dialog").getElementsByClassName("cancel")[0]
+};
+
+window.onload = function() {
+   // Load values stored in cookies
+   let cookies = document.cookie.split(/; */);
+   for(let i = 0; i < cookies.length; i++) {
+      let cookie = cookies[i];
+      if (cookie.startsWith("q_") && !cookie.endsWith("=")) {
+         let sign  = cookie.indexOf("=");
+         let key  = cookie.substring(0, sign);
+         let value = cookie.substring(sign+1);
+
+         if (key.match(/q_\d+/))
+            addQuestion(JSON.parse(decodeURIComponent(value)));
+         else if (key == "q_id")
+            quizId = value;
+         else if (key == "q_name")
+            quizName = value;
+      }
+   }
+
+   if (questions.length == 0) createQuestion();
+   if (quizId != "")
+      document.getElementById("publish-button").innerHTML = "Publish Changes";
+}
+
+questionsArea.list.onclick = function (evt) {
    let index = Array.from(evt.target.parentNode.children).indexOf(evt.target);
    selectQuestion(index);
-});
+};
 
 document.getElementById("open-button").onclick = function() {
+   openDialog.url.value = "";
    toggleDialog(document.getElementById("open-dialog"));
 };
 
-document.getElementById("publish-button").addEventListener("click", function() {
+document.getElementById("publish-button").onclick =  function() {
+   publishDialog.name.value = quizName;
    toggleDialog(document.getElementById("publish-dialog"));
-});
+};
 
-document.getElementById("new-question").addEventListener("click", createQuestion);
+questionsArea.button.onclick = createQuestion;
 
 function selectQuestion(index) {
-   question.value = questions[index].question;
-   title.value    = questions[index].title;
-   text.value     = questions[index].text;
-   sources.value  = questions[index].sources[0];
+   editor.question.value = questions[index].question;
+   editor.title.value    = questions[index].title;
+   editor.text.value     = questions[index].text;
+   editor.sources.value  = questions[index].sources[0];
 
    // Set background color to green on the "correct answer" tile
-   for (let i = 0; i < answers.length; i++) {
-      answers[i].value = questions[index].answers[i];
+   for (let i = 0; i < editor.answers.length; i++) {
+      editor.answers[i].value = questions[index].answers[i];
       if (questions[index].correctAnswer == i)
-         answers[i].style.backgroundColor = "#26de81";
-      else answers[i].style.backgroundColor = "#ffffff";
+         editor.answers[i].style.backgroundColor = "#26de81";
+      else editor.answers[i].style.backgroundColor = "#ffffff";
    }
 
    // If not wasn't already selected before, toggle the class that changes background color
    if (currentQuestion != index) {
       if (currentQuestion >= 0)
-         questionList.children[currentQuestion].classList.toggle("selected");
-      questionList.children[index].classList.toggle("selected");
+         questionsArea.list.children[currentQuestion].classList.toggle("selected");
+      questionsArea.list.children[index].classList.toggle("selected");
    }
 
    currentQuestion = index;
@@ -72,7 +124,7 @@ function createQuestion() {
    // Add to list
    let listItem = document.createElement("li");
    listItem.appendChild(document.createTextNode("New Question"));
-   document.getElementById("question-list").appendChild(listItem);
+   questionsArea.list.appendChild(listItem);
 
    selectQuestion(questions.length - 1);
 }
@@ -81,59 +133,53 @@ function addQuestion(questionObj, select = true) {
    questions.push(questionObj);
    let listItem = document.createElement("li");
    listItem.appendChild(document.createTextNode(questionObj.question));
-   document.getElementById("question-list").appendChild(listItem);
+   questionsArea.list.appendChild(listItem);
 
    if (select)
       selectQuestion(questions.length - 1);
 }
 
-function deselectQuestion(index) {
-
-}
-
 function toggleDialog(element) {
-   let dialogBackground = document.getElementById("dialog-background");
-
    dialogBackground.classList.toggle("shown");
 
    // Adjust for update
    if (element.id == "publish-dialog") {
       if (password != "" && !element.classList.contains("shown")) {
-         update(quizId, JSON.stringify(questions), password);
+         update(quizId, JSON.stringify(questions), quizName, password);
       } else if (quizId != "") {
          let labels = element.getElementsByTagName("p");
          labels[2].style.display = "none";
          labels[1].innerHTML = "Quiz Password";
-         document.getElementById("publish-password-confirm").style.display = "none";
+         publishDialog.passwordConfirm.style.display = "none";
       } else {
          let labels = element.getElementsByTagName("p");
          labels[2].style.display = "block";
          labels[1].innerHTML = "Set a Password";
-         document.getElementById("publish-password-confirm").style.display = "block";
+         publishDialog.passwordConfirm.style.display = "block";
       }
    }
 
    element.classList.toggle("shown");
 }
 
-document.getElementById("update-question").addEventListener("click", function() {
-   questions[currentQuestion].question   = question.value;
-   questions[currentQuestion].title      = title.value;
-   questions[currentQuestion].text       = text.value;
-   questions[currentQuestion].sources[0] = sources.value;
+editor.submit.onclick = function() {
+   questions[currentQuestion].question   = editor.question.value;
+   questions[currentQuestion].title      = editor.title.value;
+   questions[currentQuestion].text       = editor.text.value;
+   questions[currentQuestion].sources[0] = editor.sources.value;
 
    if (question.value != "")
-      questionList.children[currentQuestion].innerHTML = question.value;
-   else questionList.children[currentQuestion].innerHTML = "New Question";
+      questionsArea.list.children[currentQuestion].innerHTML = editor.question.value;
+   else questionsArea.list.children[currentQuestion].innerHTML = "New Question";
 
-   for (let i = 0; i < answers.length; i++)
-      questions[currentQuestion].answers[i] = answers[i].value;
-   deselectQuestion(currentQuestion);
+   for (let i = 0; i < editor.answers.length; i++)
+      questions[currentQuestion].answers[i] = editor.answers[i].value;
+   //deselectQuestion(currentQuestion);
 
    // Set cookie to save question locally
    document.cookie = "q_" + currentQuestion + "=" +
       encodeURIComponent(JSON.stringify(questions[currentQuestion]));
-});
+};
 
 function clearCookies() {
    let cookies = document.cookie.split(/; */);
@@ -145,10 +191,11 @@ function clearCookies() {
    }
 }
 
-function update(id, json, pass) {
+function update(id, json, name, pass) {
    if (id.startsWith("\"")) id = JSON.parse(id);
    let data = new URLSearchParams();
    data.append("json", json);
+   data.append("name", name)
    data.append("password", pass);
    request("Update", data, id).then((result) => {
       showQuizUrl(result);
@@ -157,9 +204,9 @@ function update(id, json, pass) {
 
 function showQuizUrl(id) {
    if (id.startsWith("\"")) id = JSON.parse(id);
-   publishStep2.style.display = "block";
-   document.getElementById("publish-step1").style.display = "none";
-   let linkElement = publishStep2.getElementsByTagName("input")[0];
+   publishDialog.step2.style.display = "block";
+   publishDialog.step1.style.display = "none";
+   let linkElement = publishDialog.step2.getElementsByTagName("input")[0];
    linkElement.value = location.protocol + "//" +
       window.location.host + "/q/" + id;
 }
@@ -187,17 +234,18 @@ function request(action, data, id = "") {
    });
 }
 
-document.getElementById("publish-submit").addEventListener("click", function() {
+publishDialog.submit.onclick = function()  {
    let data  = new URLSearchParams();
-   let pass  = document.getElementById("publish-password").value;
-   let pass2 = document.getElementById("publish-password-confirm").value;
+   let name  = publishDialog.name.value;
+   let pass  = publishDialog.password.value;
+   let pass2 = publishDialog.passwordConfirm.value;
    data.append("json", JSON.stringify(questions));
+   data.append("name", name)
    data.append("password", pass);
 
-
    // Add loader
-   let publishDialog = document.getElementById("publish-dialog");
-   publishDialog.children[1]
+   let dialog = document.getElementById("publish-dialog");
+   dialog.children[1]
       .innerHTML += "<span class='loading'></span>";
 
    let action = "Update"; // Update existing
@@ -213,46 +261,55 @@ document.getElementById("publish-submit").addEventListener("click", function() {
    if (quizId.startsWith("\"")) quizId = JSON.parse(quizId);
    request(action, data, quizId).then((result) => {
       // Remove loader
-      let loader = publishDialog.getElementsByClassName("loading")[0];
+      let loader = dialog.getElementsByClassName("loading")[0];
       loader.parentNode.removeChild(loader);
 
       showQuizUrl(result);
 
       // Update local variables
       quizId   = result;
+      quizName = name;
       password = pass;
       document.cookie = "q_id=" + result;
+      document.cookie = "q_name=" + name;
       document.getElementById("publish-button").innerHTML = "Publish Changes";
    }).catch(function(reject) {
       console.log("Error: " + reject);
    });
-});
+};
 
-document.getElementById("open-submit").addEventListener("click", function() {
-   let url  = document.getElementById("open-url").value;
-   let pass = document.getElementById("open-password").value;
+openDialog.submit.onclick = function() {
+   let url  = openDialog.url.value;
+   let pass = openDialog.password.value;
    let data = new URLSearchParams();
    if (url.endsWith("/")) url = url.substring(0, url.length - 2);
    let id = url.substring(url.lastIndexOf("/") + 1);
    data.append("id", id); // Get ID from url
    //data.append("password", document.getElementById("open-password").value);
 
+   // Confirm
+   if (questions != []) {
+      if (!confirm("Opening a quiz will overwrite any local quiz data(published quizzes will be intact), are you sure you want to continue?"))
+         return;
+   }
+
    // Add loader
-   let openDialog = document.getElementById("open-dialog");
-   openDialog.children[0].innerHTML += "<span class='loading'></span>";
+   let dialog = document.getElementById("open-dialog");
+   dialog.children[0].innerHTML += "<span class='loading'></span>";
 
    request("Get", data, id).then((result) => {
       // Remove loader
-      let loader = openDialog.getElementsByClassName("loading")[0];
+      let loader = dialog.getElementsByClassName("loading")[0];
       loader.parentNode.removeChild(loader);
 
       // Clear
       clearCookies();
       questions = [];
-      questionList.innerHTML = "";
+      questionsArea.list.innerHTML = "";
 
       // Open
-      let openedQuestions = JSON.parse(result);
+      let resultObj       = JSON.parse(result);
+      let openedQuestions = JSON.parse(resultObj.json);
       currentQuestion = 0;
       for (let i = 0; i < openedQuestions.length; i++) {
          document.cookie = "q_" + i + "=" + encodeURIComponent(
@@ -260,56 +317,49 @@ document.getElementById("open-submit").addEventListener("click", function() {
          addQuestion(openedQuestions[i], i == 0);
       }
 
-      questionList.children[0].classList.toggle("selected");
+      questionsArea.list.children[0].classList.toggle("selected");
 
       // Update local variables
       quizId   = id;
+      quizName = resultObj.name;
       password = pass;
       document.cookie = "q_id=" + id;
+      document.cookie = "q_name=" + resultObj.name;
       document.cookie = "q_password=" + pass;
       document.getElementById("publish-button").innerHTML = "Publish Changes";
 
       toggleDialog(document.getElementById("open-dialog"));
    });
-});
+};
 
-let copyButton = document.getElementById("publish-copy");
-copyButton.addEventListener("click", function() {
-   let input = copyButton.parentNode.getElementsByTagName("input")[0];
+publishDialog.copyButton.addEventListener("click", function() {
+   let input = publishDialog.copyButton.parentNode.getElementsByTagName("input")[0];
    input.select();
    document.execCommand("copy");
 });
 
-publishStep2.getElementsByTagName("button")[0].addEventListener("click", function() {
+publishDialog.step2.getElementsByTagName("button")[0].onclick = function() {
    toggleDialog(document.getElementById("publish-dialog"));
    publishStep2.style.display = "none";
-   document.getElementById("publish-step1").style.display = "block";
-});
+   publishDialog.step1.style.display = "block";
+};
 
-document.getElementById("dialog-background").addEventListener("click", function()  {
-   let publishDialog = document.getElementById("publish-dialog");
-   if (publishDialog.classList.contains("shown"))
-      toggleDialog(publishDialog);
-});
-
-window.onload = function() {
-   // Load values stored in cookies
-   let cookies = document.cookie.split(/; */);
-   for(let i = 0; i < cookies.length; i++) {
-      let cookie = cookies[i];
-      if (cookie.startsWith("q_") && !cookie.endsWith("=")) {
-         let sign  = cookie.indexOf("=");
-         let name  = cookie.substring(0, sign);
-         let value = cookie.substring(sign+1);
-
-         if (name.match(/q_\d+/))
-            addQuestion(JSON.parse(decodeURIComponent(value)));
-         else if (name == "q_id")
-            quizId = value;
-      }
-   }
-
-   if (questions.length == 0) createQuestion();
-   if (quizId != "")
-      document.getElementById("publish-button").innerHTML = "Publish Changes";
+publishDialog.cancel.onclick = function() {
+   publishDialog.name.value = "";
+   publishDialog.password.value = "";
+   publishDialog.passwordConfirm.value = "";
+   toggleDialog(document.getElementById("publish-dialog"));
 }
+
+openDialog.cancel.onclick = function() {
+   openDialog.url.value = "";
+   openDialog.password.value = "";
+   toggleDialog(document.getElementById("open-dialog"));
+}
+
+dialogBackground.addEventListener("click", function()  {
+   if (document.getElementById("publish-dialog").classList.contains("shown"))
+      toggleDialog(document.getElementById("publish-dialog"));
+   if (document.getElementById("open-dialog").classList.contains("show"))
+      toggleDialog(document.getElementById("open-dialog"));
+});
