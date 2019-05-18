@@ -29,6 +29,12 @@ p {
    font-size: 1.2em;
 }
 
+hr {
+   height: 0;
+   border-top: 1px solid rgba(0, 0, 0, 0.1);
+   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 button {
    padding: 14px 22px 14px 22px;
    margin-left: 20px;
@@ -51,9 +57,14 @@ button {
    }
 }
 
-button:hover {
+button:hover:not([disabled]) {
    background-color: #303F9F;
    transform: translateY(-2px);
+}
+
+button[disabled] {
+   background-color: #9E9E9E;
+   cursor: default;
 }
 
 button.second {

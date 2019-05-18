@@ -7,10 +7,17 @@
       <main>
          <header>
             <a href="@Url.Action("Index", "Home")"><img src="~/res/infoquizbuilder-logo.svg" /></a>
-            <button id="publish-button">Publish</label>
-            <button id="open-button">Open...</button>
+            <button id="publish-button">Publish</button>
+            <input type="text" />
          </header>
          <section class="left-cell">
+            <div id="actions-container">
+               <h2>Actions</h2>
+               <button id="open-button">Open Quiz</button>
+               <button>New Quiz</button>
+               <button disabled>Change Password</button>
+            </div>
+            <hr />
             <div id="questions-container">
                <h2>Questions</h2>
                <button id="new-question">New Question</button>

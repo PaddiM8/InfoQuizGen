@@ -22,9 +22,13 @@ header {
       color: white;
       font-size: 1.3em;
       position: absolute;
-      top: 23px;
+      top: 25px;
       width: auto;
       height: 30px;
+   }
+
+   input {
+      float: right;
    }
 
    button {
@@ -50,18 +54,37 @@ main {
 .left-cell {
    grid-area: left-cell;
    padding: 20px;
-}
-
-#questions-container {
-   width: 820px;
-   margin-left: 50%;
-   margin-top: 100px;
-   transform: translateX(-50%);
-   position: relative;
 
    button {
       font-size: 0.9em;
       padding: 10px 12px 10px 12px;
+      margin-right: 15px;
+      margin-left: 0;
+   }
+
+   div {
+      width: 820px;
+      margin-top: 50px;
+      margin-left: 50%;
+      transform: translateX(-50%);
+
+      button {
+         display: inline-block;
+      }
+   }
+
+   hr {
+      width: 800px;
+      margin-left: calc(50% - 10px);
+      transform: translateX(-50%);
+      margin-top: 40px;
+   }
+}
+
+#questions-container {
+   position: relative;
+
+   button {
       position: absolute;
       right: 0;
       top: -3px;
