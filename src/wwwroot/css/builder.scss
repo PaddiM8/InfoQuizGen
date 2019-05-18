@@ -129,6 +129,16 @@ main {
       border-bottom: 1px solid #D3D3D3;
       margin-top: -1px;
       padding: 10px;
+
+      .deleteButton {
+         width: 25px;
+         height: 25px;
+         margin-top: -1px;
+         margin-right: -1px;
+         background-color: blue;
+         float: right;
+         display: inline-block;
+      }
    }
 
    li:hover {

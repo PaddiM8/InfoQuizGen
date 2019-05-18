@@ -182,6 +182,15 @@ main {
   margin-top: -1px;
   padding: 10px;
 }
+#question-list li .deleteButton {
+  width: 25px;
+  height: 25px;
+  margin-top: -1px;
+  margin-right: -1px;
+  background-color: blue;
+  float: right;
+  display: inline-block;
+}
 #question-list li:hover {
   background-color: #D3D3D3;
   cursor: pointer;

@@ -66,8 +66,14 @@ window.onload = function() {
 }
 
 questionsArea.list.onclick = function (evt) {
-   let index = Array.from(evt.target.parentNode.children).indexOf(evt.target);
-   selectQuestion(index);
+   if (evt.target.tagName == "LI") {
+      let index = Array.from(evt.target.parentNode.children).indexOf(evt.target);
+      selectQuestion(index);
+   } else if (evt.target.tagName == "SPAN") {
+      let index = Array.from(evt.target.parentNode.parentNode.children)
+         .indexOf(evt.target.parentNode);
+      deleteQuestion(index);
+   }
 };
 
 document.getElementById("open-button").onclick = function() {
@@ -106,6 +112,28 @@ function selectQuestion(index) {
    currentQuestion = index;
 }
 
+function deleteQuestion(id) {
+   if (questions.length - 1 > id) selectQuestion(id + 1); // Select next question if possible
+   else if (id != 0) selectQuestion(id - 1);
+   else createQuestion();
+
+   questions.splice(id, 1);
+   questionsArea.list.children[id].remove();
+
+   if (id < currentQuestion) currentQuestion--;
+}
+
+function createQuestionItem(name) {
+   let listItem = document.createElement("li");
+   let deleteButton = document.createElement("span");
+   deleteButton.className = "deleteButton";
+
+   listItem.appendChild(document.createTextNode(name));
+   listItem.appendChild(deleteButton);
+
+   return listItem;
+}
+
 function createQuestion() {
    let correctAnswer = Math.floor(Math.random() * 4) + 0;
    let newQuestion = {
@@ -122,21 +150,20 @@ function createQuestion() {
    questions.push(newQuestion);
 
    // Add to list
-   let listItem = document.createElement("li");
-   listItem.appendChild(document.createTextNode("New Question"));
-   questionsArea.list.appendChild(listItem);
+   //let listItem = document.createElement("li");
+   //listItem.appendChild(document.createTextNode("New Question"));
+   questionsArea.list.appendChild(createQuestionItem("New Question"));
 
    selectQuestion(questions.length - 1);
 }
 
 function addQuestion(questionObj, select = true) {
    questions.push(questionObj);
-   let listItem = document.createElement("li");
-   listItem.appendChild(document.createTextNode(questionObj.question));
-   questionsArea.list.appendChild(listItem);
+   //let listItem = document.createElement("li");
+   //listItem.appendChild(document.createTextNode(questionObj.question));
+   questionsArea.list.appendChild(createQuestionItem(questionObj.question));
 
-   if (select)
-      selectQuestion(questions.length - 1);
+   if (select) selectQuestion(questions.length - 1);
 }
 
 function toggleDialog(element) {
