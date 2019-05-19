@@ -50,8 +50,7 @@ window.onload = function() {
          let sign  = cookie.indexOf("=");
          let key  = cookie.substring(0, sign);
          let value = cookie.substring(sign+1);
-
-         if (key.match(/q_\d+/))
+if (key.match(/q_\d+/))
             addQuestion(JSON.parse(decodeURIComponent(value)));
          else if (key == "q_id")
             quizId = value;
@@ -61,8 +60,18 @@ window.onload = function() {
    }
 
    if (questions.length == 0) createQuestion();
-   if (quizId != "")
+   if (quizId != "") {
       document.getElementById("publish-button").innerHTML = "Publish Changes";
+      showIdBox();
+   }
+
+   let copyButtons = document.getElementsByClassName("copy-button");
+   for (let k = 0; k < copyButtons.length; k++) {
+      copyButtons[k].onclick = function() {
+         let input = document.getElementById(copyButtons[k].getAttribute("relative")).select();
+         document.execCommand("copy");
+      }
+   }
 }
 
 questionsArea.list.onclick = function (evt) {
@@ -80,6 +89,11 @@ document.getElementById("open-button").onclick = function() {
    openDialog.url.value = "";
    toggleDialog(document.getElementById("open-dialog"));
 };
+
+document.getElementById("new-button").onclick = function() {
+   if (confirm("Creating a new question will discard any un-saved information, are you sure you want to proceed?"))
+      newQuestion();
+}
 
 document.getElementById("publish-button").onclick =  function() {
    publishDialog.name.value = quizName;
@@ -144,7 +158,7 @@ function createQuestion() {
       correctAnswer: correctAnswer,
       title: "",
       text: "",
-      sources: []
+      sources: [""]
    };
 
    questions.push(newQuestion);
@@ -155,6 +169,16 @@ function createQuestion() {
    questionsArea.list.appendChild(createQuestionItem("New Question"));
 
    selectQuestion(questions.length - 1);
+}
+
+function newQuestion() {
+   questions = [];
+   questionsArea.list.innerHTML = "";
+   clearCookies();
+   document.getElementById("id-box").style.display = "none";
+   document.getElementById("publish-button").innerHTML = "Publish";
+   currentQuestion = -1;
+   createQuestion();
 }
 
 function addQuestion(questionObj, select = true) {
@@ -229,13 +253,23 @@ function update(id, json, name, pass) {
    });
 }
 
+function getQuizUrl(id) {
+   return location.protocol + "//" +
+      window.location.host + "/q/" + id;
+}
+
 function showQuizUrl(id) {
    if (id.startsWith("\"")) id = JSON.parse(id);
    publishDialog.step2.style.display = "block";
    publishDialog.step1.style.display = "none";
    let linkElement = publishDialog.step2.getElementsByTagName("input")[0];
-   linkElement.value = location.protocol + "//" +
-      window.location.host + "/q/" + id;
+   linkElement.value = getQuizUrl(id);
+}
+
+function showIdBox() {
+   let idBox = document.getElementById("id-box");
+   idBox.value = getQuizUrl(quizId);
+   idBox.style.display = "block";
 }
 
 function request(action, data, id = "") {
@@ -291,6 +325,7 @@ publishDialog.submit.onclick = function()  {
       let loader = dialog.getElementsByClassName("loading")[0];
       loader.parentNode.removeChild(loader);
 
+      if (result.startsWith("\"")) result = JSON.parse(result);
       showQuizUrl(result);
 
       // Update local variables
@@ -300,6 +335,8 @@ publishDialog.submit.onclick = function()  {
       document.cookie = "q_id=" + result;
       document.cookie = "q_name=" + name;
       document.getElementById("publish-button").innerHTML = "Publish Changes";
+
+      showIdBox();
    }).catch(function(reject) {
       console.log("Error: " + reject);
    });
@@ -355,19 +392,20 @@ openDialog.submit.onclick = function() {
       document.cookie = "q_password=" + pass;
       document.getElementById("publish-button").innerHTML = "Publish Changes";
 
+      showIdBox();
       toggleDialog(document.getElementById("open-dialog"));
    });
 };
 
-publishDialog.copyButton.addEventListener("click", function() {
+/*publishDialog.copyButton.addEventListener("click", function() {
    let input = publishDialog.copyButton.parentNode.getElementsByTagName("input")[0];
    input.select();
    document.execCommand("copy");
-});
+});*/
 
 publishDialog.step2.getElementsByTagName("button")[0].onclick = function() {
    toggleDialog(document.getElementById("publish-dialog"));
-   publishStep2.style.display = "none";
+   publishDialog.step2.style.display = "none";
    publishDialog.step1.style.display = "block";
 };
 

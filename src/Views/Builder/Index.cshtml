@@ -8,13 +8,14 @@
          <header>
             <a href="@Url.Action("Index", "Home")"><img src="~/res/infoquizbuilder-logo.svg" /></a>
             <button id="publish-button">Publish</button>
-            <input type="text" />
+            <input type="text" id="id-box" readonly />
+            <span class="copy-button" id="idbox-copy" relative="id-box" title="Copy to Clipboard" role="button" aria-label="Copy Quiz URL"></span>
          </header>
          <section class="left-cell">
             <div id="actions-container">
                <h2>Actions</h2>
                <button id="open-button">Open Quiz</button>
-               <button>New Quiz</button>
+               <button id="new-button">New Quiz</button>
                <button disabled>Change Password</button>
             </div>
             <hr />
@@ -68,8 +69,8 @@
          <div id="publish-step2">
             <h3>Quiz Published!</h3>
             <p>Public Quiz URL:</p>
-            <input type="text" readonly="true" />
-            <span class="copy-button" id="publish-copy" title="Copy to Clipboard" role="button" aria-label="Copy Quiz URL"></span>
+            <input type="text" readonly="true" id="publish-id-box" />
+            <span class="copy-button" id="publish-copy" relative="publish-id-box" title="Copy to Clipboard" role="button" aria-label="Copy Quiz URL"></span>
             <br />
             <button>Close</button>
          </div>

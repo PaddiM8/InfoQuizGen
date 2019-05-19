@@ -30,12 +30,18 @@ hr {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.shadow, .tile, input[type=text], input[type=password] {
+  -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.3);
+  box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.3);
+}
+
 button {
   padding: 14px 22px 14px 22px;
   margin-left: 20px;
   margin-right: 20px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 9px;
   background-color: #3F51B5;
   color: white;
   font-size: 1.3em;
@@ -48,6 +54,14 @@ button {
 button a {
   color: white;
   text-decoration: none;
+}
+
+input[type=text], input[type=password] {
+  border: 0;
+  border-radius: 9px;
+  color: black;
+  background-color: #F5F5F5;
+  padding: 12px;
 }
 
 button:hover:not([disabled]) {
@@ -99,6 +113,13 @@ header img {
 }
 header input {
   float: right;
+  margin-right: 15px;
+  width: 250px;
+  display: none;
+}
+header .copy-button {
+  float: right;
+  margin-right: -250px;
 }
 header button {
   float: right;
@@ -165,9 +186,6 @@ main {
   margin-top: -10px;
 }
 .editor input {
-  background-color: #F5F5F5;
-  border: 0;
-  color: black;
   padding-left: 20px;
 }
 .editor h2 {
@@ -283,11 +301,12 @@ main {
   resize: none;
   background-color: #F5F5F5;
 }
-
-.shadow, .dialog input[type=text], .dialog input[type=password], .tile {
-  -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.3);
-  box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.3);
+.info-box input {
+  box-shadow: 0 0 white;
+  -webkit-box-shadow: 0 0 white;
+  -moz-box-shadow: 0 0 white;
+  padding: 0;
+  border-radius: 0;
 }
 
 .tile {
@@ -332,12 +351,7 @@ main {
   float: right;
 }
 .dialog input[type=text], .dialog input[type=password] {
-  padding: 12px 12px 12px 12px;
-  background-color: #F5F5F5;
-  border: 0;
-  border-radius: 9px;
   min-width: 550px;
-  color: black;
 }
 .dialog .loading {
   float: right;

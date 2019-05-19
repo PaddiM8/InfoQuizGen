@@ -30,12 +30,18 @@ hr {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.shadow, input[type=text], input[type=password] {
+  -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.3);
+  box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.3);
+}
+
 button {
   padding: 14px 22px 14px 22px;
   margin-left: 20px;
   margin-right: 20px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 9px;
   background-color: #3F51B5;
   color: white;
   font-size: 1.3em;
@@ -48,6 +54,14 @@ button {
 button a {
   color: white;
   text-decoration: none;
+}
+
+input[type=text], input[type=password] {
+  border: 0;
+  border-radius: 9px;
+  color: black;
+  background-color: #F5F5F5;
+  padding: 12px;
 }
 
 button:hover:not([disabled]) {
