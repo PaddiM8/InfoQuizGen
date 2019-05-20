@@ -312,8 +312,9 @@ publishDialog.submit.onclick = function()  {
    let action = "Update"; // Update existing
    if (quizId == "") { // Publish as new
       if (pass != pass2) {
-         alert("Passwords don't match!'");
-         return;
+         document.getElementById("publish-confirm-error").style.display = "inline";
+         dialog.getElementsByClassName("loading")[0].remove();
+         return true;
       }
 
       action = "Create";

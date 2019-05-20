@@ -234,9 +234,13 @@ main {
   height: 25px;
   margin-top: -1px;
   margin-right: -1px;
-  background-color: blue;
   float: right;
   display: inline-block;
+  background: url("../res/bin.svg") no-repeat center;
+  background-size: 18px auto;
+}
+#question-list li .deleteButton:hover {
+  background-image: url("../res/bin-hover.svg");
 }
 #question-list li:hover {
   background-color: #D3D3D3;
@@ -358,6 +362,11 @@ main {
   margin-top: 25px;
 }
 
+.error {
+  color: #FDD835;
+  display: none;
+}
+
 #dialog-background {
   position: absolute;
   z-index: 10;
@@ -408,15 +417,22 @@ main {
 }
 
 .copy-button {
-  width: 43px;
-  height: 43px;
+  width: 42px;
+  height: 42px;
   margin-left: -40px;
   margin-bottom: -16px;
-  border-top-right-radius: 9px;
-  border-bottom-right-radius: 9px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
   display: inline-block;
-  background-color: #E0E0E0;
   cursor: pointer;
+  background: url("../res/copy.svg") no-repeat center;
+  background-size: 18px auto;
+  background-color: #9E9E9E;
+  transition: 0.3s ease background-color;
+}
+
+.copy-button:hover {
+  background-color: #757575;
 }
 
 @keyframes loading {
