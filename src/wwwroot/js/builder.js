@@ -220,8 +220,8 @@ editor.submit.onclick = function() {
    questions[currentQuestion].sources[0] = editor.sources.value;
 
    if (question.value != "")
-      questionsArea.list.children[currentQuestion].innerHTML = editor.question.value;
-   else questionsArea.list.children[currentQuestion].innerHTML = "New Question";
+      questionsArea.list.children[currentQuestion].innerHTML = editor.question.value + "<span class='deleteButton'></span>";
+   else questionsArea.list.children[currentQuestion].innerHTML = "New Question<span class'deleteButton'></span>";
 
    for (let i = 0; i < editor.answers.length; i++)
       questions[currentQuestion].answers[i] = editor.answers[i].value;
