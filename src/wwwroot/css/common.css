@@ -6,7 +6,7 @@
   font-family: OpenSans;
   src: url(../res/fonts/OpenSans.woff2) format("woff2");
 }
-p, label, input, button, li, textarea, footer {
+p, label, input, button, li, textarea, footer, h3 {
   font-family: OpenSans, serif;
 }
 
